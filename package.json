@@ -1,0 +1,20 @@
+{
+  "name": "nodefilesystem",
+  "version": "1.0.0",
+  "description": "node file system",
+  "main": "server.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "start": "tsc"
+  },
+  "keywords": [
+    "file",
+    "gallery",
+    "video"
+  ],
+  "author": "ehsan munna",
+  "license": "ISC",
+  "dependencies": {
+    "express": "^4.17.1"
+  }
+}
