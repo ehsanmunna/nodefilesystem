@@ -2,8 +2,10 @@
 var express = require("express");
 var fs = require('fs');
 var path = require('path')
+const cors = require('cors');
 // Create a new express application instance
 var app = express();
+app.use(cors())
 app.get('/', function (req, res) {
     res.send('Hello World!');
 });
