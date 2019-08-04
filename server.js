@@ -3,16 +3,25 @@ var express = require("express");
 var fs = require('fs');
 var path = require('path')
 const cors = require('cors');
+const drivelist = require('drivelist');
 // Create a new express application instance
 var app = express();
 app.use(cors())
 app.get('/', function (req, res) {
-    res.send('Hello World!');
+    //res.send('Hello World!');
+    drivelist.list().then((driveList)=>{
+        res.send(driveList);
+    });
+    // drives.forEach((drive) => {
+    // console.log(drive);
+    // });
+    
 });
+
 app.get('/dir/:Drive', function (req, res) {
     var basePath = req.params.Drive + ":/";
     var reqPath = req.query.path;
-    if (req.query.path) {
+    if (reqPath) {
         basePath = basePath + reqPath;
     }
     fs.readdir(basePath, function (err, files) {
@@ -24,12 +33,18 @@ app.get('/dir/:Drive', function (req, res) {
         // console.log(files);
         files.forEach(function (file) {
             // Do whatever you want to do with the file
-            var _fullPath =  basePath + "/" +  file;
+            // var _fullPath = basePath;
+            if (reqPath) {
+                _fullPath =  basePath + "/" +  file;    
+            } else {
+                _fullPath = basePath + file;
+            }
+            
             
             statSync(_fullPath, (resp)=>{
                 var val = {
                     name: file,
-                    fulPath: _fullPath,
+                    fullPath: _fullPath,
                     isDirectory: resp.isDirectory(),// fs.statSync(_fullPath).isDirectory(),
                     isFile: resp.isFile(), // fs.lstatSync( _fullPath ).isFile(),
                     ext: path.extname(_fullPath)
