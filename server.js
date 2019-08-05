@@ -3,15 +3,17 @@ var express = require("express");
 var fs = require('fs');
 var path = require('path')
 const cors = require('cors');
-const drivelist = require('drivelist');
+// const drivelist = require('drivelist');
+const { spawn, exec } = require('child_process');
+var df = require('node-diskfree');
 // Create a new express application instance
 var app = express();
 app.use(cors())
 app.get('/', function (req, res) {
     //res.send('Hello World!');
-    drivelist.list().then((driveList)=>{
-        res.send(driveList);
-    });
+    // drivelist.list().then((driveList)=>{
+    //     res.send(driveList);
+    // });
     // drives.forEach((drive) => {
     // console.log(drive);
     // });
@@ -74,6 +76,16 @@ app.get('/dir/:Drive', function (req, res) {
         
     });
 });
+
+app.get('/gets', function(req, res){
+    exec('ipconfig', (err, stdout, stderr) => {
+        if (err) {
+          res.send(err);
+        }
+        res.send(stdout);
+      })
+})
+
 app.listen(3000, function () {
     console.log('Example app listening on port 3000!');
 });
