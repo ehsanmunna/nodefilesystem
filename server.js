@@ -37,6 +37,9 @@ function renameFile(file, renameString){
     case 'text/plain':
       fileExt = '.txt'
       break;
+    case 'application/pdf':
+      fileExt = '.pdf'
+      break;
     default:
       fileExt = ''
       break;
