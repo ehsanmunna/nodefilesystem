@@ -3,89 +3,59 @@ var express = require("express");
 var fs = require('fs');
 var path = require('path')
 const cors = require('cors');
-// const drivelist = require('drivelist');
-const { spawn, exec } = require('child_process');
-var df = require('node-diskfree');
-// Create a new express application instance
+const fileUpload = require('express-fileupload');
+var bodyParser = require('body-parser');
+var uuidv4 = require('uuid').v4;
 var app = express();
 app.use(cors())
+app.use(bodyParser.urlencoded({extended: false, keepExtensions:true}));
+app.use(bodyParser.json());
+
+app.use(fileUpload());
 app.get('/', function (req, res) {
-    //res.send('Hello World!');
-    // drivelist.list().then((driveList)=>{
-    //     res.send(driveList);
-    // });
-    // drives.forEach((drive) => {
-    // console.log(drive);
-    // });
-    
+  res.send('Hello World!');
 });
 
-app.get('/dir/:Drive', function (req, res) {
-    var basePath = req.params.Drive + ":/";
-    var reqPath = req.query.path;
-    if (reqPath) {
-        basePath = basePath + reqPath;
-    }
-    fs.readdir(basePath, function (err, files) {
-        if (err) {
-            res.send(err.message);
-        }
-        //listing all files using forEach
-        var directoryList = [];
-        // console.log(files);
-        files.forEach(function (file) {
-            // Do whatever you want to do with the file
-            // var _fullPath = basePath;
-            if (reqPath) {
-                _fullPath =  basePath + "/" +  file;    
-            } else {
-                _fullPath = basePath + file;
-            }
-            
-            
-            statSync(_fullPath, (resp)=>{
-                var val = {
-                    name: file,
-                    fullPath: _fullPath,
-                    isDirectory: resp.isDirectory(),// fs.statSync(_fullPath).isDirectory(),
-                    isFile: resp.isFile(), // fs.lstatSync( _fullPath ).isFile(),
-                    ext: path.extname(_fullPath)
-                }
-                directoryList.push(val);
-            })
+app.post('/upload', function (req, res) {
+  const file = req.files.sampleFile;
+  console.log(file); // the uploaded file object
+  const uId = uuidv4();
+  file.mv('./files/' + renameFile(file,uId) , function(err) {
+    if (err)
+      return res.status(500).send(err);
 
-        });
-        
-        if (directoryList.length > 0) {
-            res.send(directoryList);    
-        } else {
-            res.send("This folder is empty!!!");
-        }
-
-        function statSync(path, cb, eb){
-            try {
-                var sss = fs.statSync(path)
-                cb(sss);
-            } catch (error) {
-                if (eb) {
-                    eb(error);    
-                }
-                
-            }
-        }
-        
-    });
+    res.send({id: uId});
+  });
 });
 
-app.get('/gets', function(req, res){
-    exec('ipconfig', (err, stdout, stderr) => {
-        if (err) {
-          res.send(err);
-        }
-        res.send(stdout);
-      })
-})
+function renameFile(file, renameString){
+  let fileExt;
+  switch (file.mimetype) {
+    case 'image/jpeg':
+      fileExt = '.jpg'
+      break;
+    case 'text/plain':
+      fileExt = '.txt'
+      break;
+    default:
+      fileExt = ''
+      break;
+  }
+  return renameString + fileExt;
+}
 
-app.listen(3000, function () {
-    console.log('Example app listening on port 3000!');
+app.get('/file/:id', function (req, res) {
+  const _id = req.params.id;
+  fs.readdir('./files/', function(err, files){
+    if(err) {console.log(err)}
+    const file = files.find(item=>item.startsWith(_id));
+    //console.log(files.find(item=>item.startsWith(_id)))
+    res.sendfile('./files/' + file);
+  })
+  // res.sendfile('./file/' + .startsWith(req.param.id));
+});
+
+const port = 3001;
+app.listen(port, function () {
+  console.log(`Example app listening on port ${port}!`);
 });

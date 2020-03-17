@@ -5,7 +5,7 @@
   "main": "server.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
-    "start": "tsc"
+    "start": "nodemon server.js"
   },
   "keywords": [
     "file",
@@ -15,9 +15,12 @@
   "author": "ehsan munna",
   "license": "ISC",
   "dependencies": {
+    "body-parser": "^1.19.0",
     "child_process": "^1.0.2",
     "cors": "^2.8.5",
     "express": "^4.17.1",
-    "node-diskfree": "^0.1.0"
+    "express-fileupload": "^1.1.6",
+    "node-diskfree": "^0.1.0",
+    "uuid": "^7.0.2"
   }
 }
