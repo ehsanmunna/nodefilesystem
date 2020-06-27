@@ -17,15 +17,15 @@ router.post('/', function (req, res) {
       }
   
       res.send({
-        input: file,
-        output: {
+        // input: file,
+        // output: {
           id: uId,
           name: fileName,
           filelocation: {
               method: 'GET',
-              path: `http://localhost:3001/api/file/${fileName}`
+              path: `http://${config.host}:${config.port}${config.basePath}/file/${fileName}`
           }
-        }
+        // }
       })
     });
   

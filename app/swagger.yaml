@@ -1,0 +1,102 @@
+swagger: "2.0"
+info:
+  description: "This is a sample server Petstore server.  You can find out more about     Swagger at [http://swagger.io](http://swagger.io) or on [irc.freenode.net, #swagger](http://swagger.io/irc/).      For this sample, you can use the api key `special-key` to test the authorization     filters."
+  version: "1.0.0"
+  title: "Swagger File Upload"
+  termsOfService: "http://swagger.io/terms/"
+  contact:
+    email: "grmunnabd@gmail.com"
+  license:
+    name: "Apache 2.0"
+    url: "http://www.apache.org/licenses/LICENSE-2.0.html"
+host: "localhost:3001"
+basePath: "/api/v1"
+tags:
+- name: "upload"
+  description: "upload files"
+  externalDocs:
+    description: "Find out more"
+    url: "http://swagger.io"
+- name: "file"
+  description: "get specific files"
+schemes:
+- "http"
+- "https"
+paths:
+  /upload:
+    post:
+      tags:
+      - "upload"
+      summary: "Add a file to the store"
+      description: ""
+      operationId: "addFile"
+      consumes:
+      - "multipart/form-data"
+      produces:
+      - "application/json"
+      parameters:
+      - name: "sampleFile"
+        in: "formData"
+        description: "file to upload"
+        required: false
+        type: "file"
+      responses:
+        "200":
+          description: "successful operation"
+          schema:
+            $ref: "#/definitions/UploadResponse"
+      security:
+      - petstore_auth:
+        - "write:pets"
+        - "read:pets"
+  /file/{fileName}:
+    get:
+      tags:
+      - "file"
+      summary: "get file by file name"
+      description: "Returns a single file"
+      operationId: "getFileByName"
+      produces:
+      - "application/xml"
+      - "application/json"
+      parameters:
+      - name: "fileName"
+        in: "path"
+        description: "name of file to return"
+        required: true
+        type: "string"
+      responses:
+        "200":
+          description: "successful operation"
+          schema:
+            $ref: "#/definitions/FileResponse"
+        "400":
+          description: "Invalid Name supplied"
+        "404":
+          description: "File not found"
+      security:
+      - api_key: []
+definitions:
+  UploadResponse:
+    type: "object"
+    properties:
+      id:
+        type: "string"
+      name:
+        type: "string"
+      filelocation:
+        type: "object"
+        $ref: "#/definitions/FileLocation"
+  FileResponse:
+    type: "string"
+    format: "binary"
+  FileLocation:
+    type: "object"
+    properties:
+      method:
+        type: "string"
+      path:
+        type: "string"
+externalDocs:
+  description: "Find out more about Swagger"
+  url: "http://swagger.io"

@@ -21,6 +21,8 @@
     "express": "^4.17.1",
     "express-fileupload": "^1.1.6",
     "node-diskfree": "^0.1.0",
-    "uuid": "^7.0.2"
+    "swagger-ui-express": "^4.1.4",
+    "uuid": "^7.0.2",
+    "yamljs": "^0.3.0"
   }
 }
