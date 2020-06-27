@@ -5,6 +5,8 @@ var path = require('path')
 const cors = require('cors');
 const fileUpload = require('express-fileupload');
 var bodyParser = require('body-parser');
+var FormData = require('form-data');
+var fs = require('fs');
 var uuidv4 = require('uuid').v4;
 var app = express();
 app.use(cors())
@@ -13,11 +15,15 @@ app.use(bodyParser.json());
 
 app.use(fileUpload());
 app.get('/', function (req, res) {
-  res.send('Hello World!');
+  res.sendfile('./index.html')
 });
 
 app.post('/upload', function (req, res) {
-  const file = req.files.sampleFile;
+  var form = new FormData();
+  form.append('my_file', fs.createReadStream(req.body.fileName));
+  // form.my_file
+  const file = form.myfile;
+  // const file = req.files.fileName;
   console.log(file); // the uploaded file object
   const uId = uuidv4();
   file.mv('./files/' + renameFile(file,uId) , function(err) {
