@@ -31,5 +31,6 @@ app.use(config.basePath + '/file', require('./app/attachment/files'));
 
 const port = 3001;
 app.listen(port, function () {
-  console.log(`filesystem app listening on port ${port}!`);
+  console.log(`filesystem app url: http://localhost:${port}`);
+  console.log(`swagger: http://localhost:${port}/api-docs`);
 });
