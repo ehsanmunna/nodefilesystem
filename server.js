@@ -19,7 +19,9 @@ app.use(bodyParser.json());
 app.use(fileUpload({
   useTempFiles: true,
   tempFileDir: './tmp/',
-  debug: true
+  debug: true,
+  // safeFileNames: true,
+  // preserveExtension: true
 }));
 app.get('/', function (req, res) {
   res.send('Welcome to file upload system!');
