@@ -17,17 +17,18 @@ router.get('/:name', function (req, res) {
 });
 // var files = fs.readdirSync(uploadedFolderPath);
 // console.log(files.find(item => item.startsWith('5d430d29-04ae-4eb3-bc8f-c48331038307_spiderman')))
-const files = fs.readdirSync(uploadedFolderPath);
-  const file = files.find(item => item.startsWith('5d430d29-04ae-4eb3-bc8f-c48331038307_spiderman'));
-  console.log(file)
-  if (file !== undefined) {
-    fs.unlink(`${uploadedFolderPath}/${file}`, (err) => {
-      if (err) throw err;
-      return 1;
-    })
-  } else {
-    return "deleted";
-  }
+
+// const files = fs.readdirSync(uploadedFolderPath);
+//   const file = files.find(item => item.startsWith('5d430d29-04ae-4eb3-bc8f-c48331038307_spiderman'));
+//   console.log(file)
+//   if (file !== undefined) {
+//     fs.unlink(`${uploadedFolderPath}/${file}`, (err) => {
+//       if (err) throw err;
+//       return 1;
+//     })
+//   } else {
+//     return "deleted";
+//   }
   
   
 router.delete('/:id', function (req, res) {
