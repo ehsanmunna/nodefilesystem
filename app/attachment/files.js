@@ -34,11 +34,14 @@ router.get('/:name', function (req, res) {
 router.delete('/:id', function (req, res) {
   const files = fs.readdirSync(uploadedFolderPath);
   const file = files.find(item => item.startsWith(req.params.id));
-  fs.unlink(`${uploadedFolderPath}/${file}`, (err) => {
-    if (err) throw err;
-    return 1;
-  })
-  
+  if (file) {
+    fs.unlink(`${uploadedFolderPath}/${file}`, (err) => {
+      if (err) throw err;
+      res.send({status: 200, message: 'deleted'});
+    })
+  } else {
+    res.send({status: 404, message: 'not found'})
+  }
   // fs.unlink(uploadedFolderPath + , (err) => {
   //   if (err) throw err;
   //   console.log('successfully deleted /tmp/hello');
